@@ -1,5 +1,26 @@
+/*
+ * LibBerryMotes
+ * 
+ * Copyright (C) 2013 Daniel Triendl <trellmor@trellmor.com>
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
 package com.trellmor.BerryMotes;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
@@ -14,7 +35,6 @@ import android.widget.TextView;
 public class AnimationTextView extends TextView implements Drawable.Callback {
 	private Handler mHandler = new Handler();
 	private AnimationTextWatcher mTextWatcher = new AnimationTextWatcher();
-	private boolean mAnimating = false;
 
 	public AnimationTextView(Context context) {
 		super(context);
@@ -70,11 +90,14 @@ public class AnimationTextView extends TextView implements Drawable.Callback {
 		}
 	}
 
+	@SuppressLint("WrongCall")
 	@Override
 	public void invalidateDrawable(Drawable dr) {
 		if (dr instanceof AnimationDrawable) {
-			((AnimationDrawable)dr).start();
+			// TextView caches some state, onLayout forces it to rerender
+			onLayout(true, getLeft(), getTop(), getRight(), getBottom());
 		}
+
 		invalidate();
 	}
 
