@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-package com.trellmor.BerryMotes;
+package com.trellmor.berrymotes;
 
 import java.util.ArrayList;
 
@@ -30,7 +30,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.util.LruCache;
 import android.text.Html.ImageGetter;
 
-import com.trellmor.BerryMotes.provider.EmotesContract;
+import com.trellmor.berrymotes.provider.EmotesContract;
 
 public class EmoteGetter implements ImageGetter {
 	private ContentResolver mResolver;

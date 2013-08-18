@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-package com.trellmor.BerryMotes;
+package com.trellmor.berrymotes;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

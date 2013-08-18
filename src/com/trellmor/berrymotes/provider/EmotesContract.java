@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-package com.trellmor.BerryMotes.provider;
+package com.trellmor.berrymotes.provider;
 
 import android.content.ContentResolver;
 import android.net.Uri;
@@ -31,7 +31,7 @@ public class EmotesContract {
 	/**
 	 * Content provider authority.
 	 */
-	public static final String CONTENT_AUTHORITY = "com.trellmor.BerryMotes";
+	public static final String CONTENT_AUTHORITY = "com.trellmor.berrymotes";
 
 	/**
 	 * Base URI. (content://com.example.android.network.sync.basicsyncadapter)
