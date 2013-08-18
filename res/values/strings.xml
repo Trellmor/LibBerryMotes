@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+	LibBerryMotes
+	
+	Copyright (C) 2013 Daniel Triendl <trellmor@trellmor.com>
+	
+	This library is free software; you can redistribute it and/or
+	modify it under the terms of the GNU Lesser General Public
+	License as published by the Free Software Foundation; either
+	version 3 of the License, or (at your option) any later version.
+	
+	This library is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+	Lesser General Public License for more details.
+	
+	You should have received a copy of the GNU Lesser General Public
+	License along with this library; if not, write to the Free Software
+	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+-->
+
+<resources>
+
+    <string name="berrymotes_app_name">BerryMotes</string>
+    <string name="berrymotes_not_installed">BerryMotes is not installed. Install it now from the Play store.</string>
+    
+    <string name="pref_header_berrymotes">BerryMotes</string>
+    <string name="pref_title_berrymotes_enable">Enable emotes</string>
+    <string name="pref_description_berrymotes_enable_false">Emotes are disabled, no emotes will be displayed</string>
+    <string name="pref_description_berrymotes_enable_true">Emotes are enabled</string>
+    <string name="pref_title_berrymotes_settings">Settings</string>
+
+</resources>
