@@ -32,6 +32,17 @@ import android.text.Html.ImageGetter;
 
 import com.trellmor.berrymotes.provider.EmotesContract;
 
+/**
+ * EmoteGetter
+ * 
+ * Fetches emotes from sd-card and returns Drawables
+ * 
+ * Decends from ImageGetter and can be used with
+ * {@link android.text.Html#fromHtml(String, ImageGetter, android.text.Html.TagHandler)}
+ * 
+ * @author Daniel
+ * 
+ */
 public class EmoteGetter implements ImageGetter {
 	private ContentResolver mResolver;
 
@@ -40,6 +51,11 @@ public class EmoteGetter implements ImageGetter {
 	private LruCache<String, Drawable> mCache;
 	private LruCache<String, AnimationEmode> mAnimationCache;
 
+	/**
+	 * Create new EmoteGetter instance
+	 * 
+	 * @param context Android context
+	 */
 	public EmoteGetter(Context context) {
 		mResolver = context.getContentResolver();
 		mCache = new LruCache<String, Drawable>(20);
@@ -57,7 +73,7 @@ public class EmoteGetter implements ImageGetter {
 			d = ae.newDrawable();
 			d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
 		}
-		
+
 		Cursor cursor = mResolver.query(EmotesContract.Emote.CONTENT_URI,
 				PROJECTION, EmotesContract.Emote.COLUMN_NAME + "=?",
 				new String[] { source }, EmotesContract.Emote.COLUMN_INDEX
@@ -82,14 +98,18 @@ public class EmoteGetter implements ImageGetter {
 				do {
 					String path = cursor.getString(POS_IMAGE);
 					Drawable frame = Drawable.createFromPath(path);
-					ae.addFrame(frame, cursor.getInt(POS_DELAY));
+					if (frame != null) {
+						ae.addFrame(frame, cursor.getInt(POS_DELAY));
+					}
 				} while (cursor.moveToNext());
 				mAnimationCache.put(source, ae);
 				d = ae.newDrawable();
 			} else {
 				String file = cursor.getString(POS_IMAGE);
 				d = Drawable.createFromPath(file);
-				mCache.put(source, d);
+				if (d != null) {
+					mCache.put(source, d);
+				}
 			}
 		}
 
@@ -101,7 +121,7 @@ public class EmoteGetter implements ImageGetter {
 		}
 		return d;
 	}
-	
+
 	private class AnimationEmode {
 		private ArrayList<AnimationEmoteFrame> mFrames = new ArrayList<AnimationEmoteFrame>();
 

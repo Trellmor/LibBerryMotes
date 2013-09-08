@@ -32,6 +32,12 @@ import android.text.style.ImageSpan;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+/**
+ * TextView to properly handle AnimationDrawables
+ * 
+ * @author Daniel
+ *
+ */
 public class AnimationTextView extends TextView implements Drawable.Callback {
 	private Handler mHandler = new Handler();
 	private AnimationTextWatcher mTextWatcher = new AnimationTextWatcher();

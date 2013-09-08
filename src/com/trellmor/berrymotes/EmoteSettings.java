@@ -26,13 +26,31 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 
+/**
+ * Emote settings helper
+ * 
+ * @author Daniel
+ *
+ */
 public class EmoteSettings {
+	/**
+	 * Key for storing emotes enabled preference
+	 */
 	public static final String KEY_BERRYMOTES_ENABLED = "berrymotes.enabled";
+	
+	/**
+	 * Key for launching BerryMotes settings
+	 */
 	public static final String KEY_BERRYMOTES_SETTINGS = "berrymotes.settings";
 
 	private EmoteSettings() {
 	}
 
+	/**
+	 * Add emote settings to an existing settings activity
+	 * 
+	 * @param context Settings activity
+	 */
 	@SuppressWarnings("deprecation")
 	public static void addEmoteSettings(PreferenceActivity context) {
 		// Add 'BerryMotes' preferences, and a corresponding header.
@@ -58,6 +76,9 @@ public class EmoteSettings {
 		prefSettings.setOnPreferenceClickListener(sSettingsClickListener);
 	}
 
+	/**
+	 * Helper to set preference summaries and show install BerryMotes dialog if necessary
+	 */
 	public static Preference.OnPreferenceChangeListener sEnabledChangeListener = new Preference.OnPreferenceChangeListener() {
 
 		@Override
@@ -87,6 +108,10 @@ public class EmoteSettings {
 		}
 	};
 	
+
+	/**
+	 * Helper to launch BerryMotes settings or show install BerryMotes dialog if necessary
+	 */	
 	public static Preference.OnPreferenceClickListener sSettingsClickListener = new Preference.OnPreferenceClickListener() {
 		
 		@Override

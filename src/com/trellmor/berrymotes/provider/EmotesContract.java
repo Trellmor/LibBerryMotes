@@ -24,6 +24,12 @@ import android.content.ContentResolver;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+/**
+ * Emotes Contract
+ * 
+ * @author Daniel
+ *
+ */
 public class EmotesContract {
 	private EmotesContract() {
 	}
@@ -38,32 +44,93 @@ public class EmotesContract {
 	 */
 	public static final Uri BASE_CONTENT_URI = Uri.parse("content://"
 			+ CONTENT_AUTHORITY);
-	
-	private static final String PATH_EMOTES = "emotes";
 
+	/**
+	 * URI Path for all emotes
+	 * 
+	 * Applies filter for NSFW emotes
+	 */
+	public static final String PATH_EMOTES = "emotes";
+	
+	/**
+	 * URI Path for distinct emotes
+	 * 
+	 * Applies SELECT DISTINCT
+	 */
+	public static final String PATH_EMOTES_DISTINCT = "emotes_distinct";
+
+	/**
+	 * Emote definition
+	 * 
+	 * @author Daniel
+	 *
+	 */
 	public static final class Emote implements BaseColumns {
 		private Emote() {
 		}
 
+		/**
+		 * Emotes list content type
+		 */
 		public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
 				+ "/vnd.berrymotes.emotes";
+		
+		/**
+		 * Single emote content type
+		 */
 		public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
 				+ "/vnd.berrymotes.emote";
-		
-		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_EMOTES).build();
 
+		/**
+		 * Content uri for emotes
+		 */
+		public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_EMOTES).build();
+		
+		/**
+		 * Content uri for distinct emotes
+		 * 
+		 * Applies SELCT DISTINCT
+		 */
+		public static final Uri CONTENT_URI_DISTINCT = BASE_CONTENT_URI.buildUpon().appendPath(PATH_EMOTES_DISTINCT).build();
+
+		/**
+		 * Emotes table name
+		 */
 		public static final String TABLE_NAME = "emotes";
 
+		/**
+		 * Emote name
+		 */
 		public static final String COLUMN_NAME = "name";
 
+		/**
+		 * Emote NSFW
+		 */
 		public static final String COLUMN_NSFW = "nsfw";
 
+		/**
+		 * Animated emote
+		 */
 		public static final String COLUMN_APNG = "apng";
 
+		/**
+		 * Image path
+		 */
 		public static final String COLUMN_IMAGE = "image";
 
+		/**
+		 * Frame delay for animated emotes
+		 */
 		public static final String COLUMN_DELAY = "frame_delay";
 
+		/**
+		 * Frame index for animated emotes
+		 */
 		public static final String COLUMN_INDEX = "frame_index";
+		
+		/**
+		 * Emote checksum
+		 */
+		public static final String COLUMN_HASH = "hash";
 	}
 }
