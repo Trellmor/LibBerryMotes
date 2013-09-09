@@ -42,7 +42,7 @@ public class EmoteUtils {
 	 */
 	public static void launchMarkert(Context context) {
 		Intent intent = new Intent(Intent.ACTION_VIEW);
-		intent.setData(Uri.parse("market://detauls?id=" + BERRYMOTES_NAME));
+		intent.setData(Uri.parse("market://details?id=" + BERRYMOTES_NAME));
 		context.startActivity(intent);
 	}
 	
