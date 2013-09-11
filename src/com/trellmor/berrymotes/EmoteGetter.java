@@ -30,6 +30,8 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.util.LruCache;
 import android.text.Html.ImageGetter;
 
+import com.trellmor.berrymotes.loader.BasicEmoteLoader;
+import com.trellmor.berrymotes.loader.EmoteLoader;
 import com.trellmor.berrymotes.provider.EmotesContract;
 
 /**
@@ -50,16 +52,27 @@ public class EmoteGetter implements ImageGetter {
 			EmotesContract.Emote.COLUMN_APNG, EmotesContract.Emote.COLUMN_DELAY };
 	private LruCache<String, Drawable> mCache;
 	private LruCache<String, AnimationEmode> mAnimationCache;
+	private EmoteLoader mLoader;
+
+	/**
+	 * Create new {@link EmoteGetter} instance
+	 * 
+	 * @param context Android context
+	 */
+	public EmoteGetter(Context context) {
+		this(context, new BasicEmoteLoader());
+	}
 
 	/**
 	 * Create new EmoteGetter instance
 	 * 
 	 * @param context Android context
 	 */
-	public EmoteGetter(Context context) {
+	public EmoteGetter(Context context, EmoteLoader loader) {
 		mResolver = context.getContentResolver();
 		mCache = new LruCache<String, Drawable>(20);
 		mAnimationCache = new LruCache<String, AnimationEmode>(5);
+		mLoader = loader;
 	}
 
 	@Override
@@ -97,7 +110,7 @@ public class EmoteGetter implements ImageGetter {
 
 				do {
 					String path = cursor.getString(POS_IMAGE);
-					Drawable frame = Drawable.createFromPath(path);
+					Drawable frame = mLoader.fromPath(path);
 					if (frame != null) {
 						ae.addFrame(frame, cursor.getInt(POS_DELAY));
 					}
@@ -105,8 +118,8 @@ public class EmoteGetter implements ImageGetter {
 				mAnimationCache.put(source, ae);
 				d = ae.newDrawable();
 			} else {
-				String file = cursor.getString(POS_IMAGE);
-				d = Drawable.createFromPath(file);
+				String path = cursor.getString(POS_IMAGE);
+				d = mLoader.fromPath(path);
 				if (d != null) {
 					mCache.put(source, d);
 				}
