@@ -21,6 +21,7 @@
 package com.trellmor.berrymotes;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -29,6 +30,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.util.LruCache;
 import android.text.Html.ImageGetter;
+import android.util.Log;
 
 import com.trellmor.berrymotes.loader.BasicEmoteLoader;
 import com.trellmor.berrymotes.loader.EmoteLoader;
@@ -46,6 +48,8 @@ import com.trellmor.berrymotes.provider.EmotesContract;
  * 
  */
 public class EmoteGetter implements ImageGetter {
+	private static final String TAG = EmoteGetter.class.getName();
+	
 	private ContentResolver mResolver;
 
 	private final String[] PROJECTION = { EmotesContract.Emote.COLUMN_IMAGE,
@@ -53,11 +57,13 @@ public class EmoteGetter implements ImageGetter {
 	private LruCache<String, Drawable> mCache;
 	private LruCache<String, AnimationEmode> mAnimationCache;
 	private EmoteLoader mLoader;
+	private HashSet<String> mBlacklist;
 
 	/**
 	 * Create new {@link EmoteGetter} instance
 	 * 
-	 * @param context Android context
+	 * @param context
+	 *            Android context
 	 */
 	public EmoteGetter(Context context) {
 		this(context, new BasicEmoteLoader());
@@ -66,25 +72,34 @@ public class EmoteGetter implements ImageGetter {
 	/**
 	 * Create new EmoteGetter instance
 	 * 
-	 * @param context Android context
+	 * @param context
+	 *            Android context
 	 */
 	public EmoteGetter(Context context, EmoteLoader loader) {
 		mResolver = context.getContentResolver();
 		mCache = new LruCache<String, Drawable>(20);
 		mAnimationCache = new LruCache<String, AnimationEmode>(5);
+		mBlacklist = new HashSet<String>();
 		mLoader = loader;
 	}
 
 	@Override
 	public Drawable getDrawable(String source) {
+		if (mBlacklist.contains(source))
+			return null;
+
 		Drawable d = mCache.get(source);
 		if (d != null)
 			return d;
 
 		AnimationEmode ae = mAnimationCache.get(source);
 		if (ae != null) {
-			d = ae.newDrawable();
-			d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+			try {
+				d = ae.newDrawable();
+				d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+			} catch (OutOfMemoryError e) {
+				return null;
+			}
 		}
 
 		Cursor cursor = mResolver.query(EmotesContract.Emote.CONTENT_URI,
@@ -108,18 +123,30 @@ public class EmoteGetter implements ImageGetter {
 				final int POS_DELAY = cursor
 						.getColumnIndex(EmotesContract.Emote.COLUMN_DELAY);
 
-				do {
-					String path = cursor.getString(POS_IMAGE);
-					Drawable frame = mLoader.fromPath(path);
-					if (frame != null) {
-						ae.addFrame(frame, cursor.getInt(POS_DELAY));
-					}
-				} while (cursor.moveToNext());
-				mAnimationCache.put(source, ae);
-				d = ae.newDrawable();
+				try {
+					do {
+						String path = cursor.getString(POS_IMAGE);
+						Drawable frame = mLoader.fromPath(path);
+						if (frame != null) {
+							ae.addFrame(frame, cursor.getInt(POS_DELAY));
+						}
+					} while (cursor.moveToNext());
+					d = ae.newDrawable();
+					mAnimationCache.put(source, ae);
+				} catch (OutOfMemoryError e) {
+					d = null;
+					mBlacklist.add(source);
+					Log.e(TAG, "Failed to load " + source, e);
+				}
 			} else {
 				String path = cursor.getString(POS_IMAGE);
-				d = mLoader.fromPath(path);
+				try {
+					d = mLoader.fromPath(path);
+				} catch (OutOfMemoryError e) {
+					d = null;
+					mBlacklist.add(source);
+					Log.e(TAG, "Failed to load " + source, e);
+				}
 				if (d != null) {
 					mCache.put(source, d);
 				}
