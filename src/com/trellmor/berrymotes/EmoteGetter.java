@@ -97,6 +97,7 @@ public class EmoteGetter implements ImageGetter {
 			try {
 				d = ae.newDrawable();
 				d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+				return d;
 			} catch (OutOfMemoryError e) {
 				return null;
 			}
