@@ -40,7 +40,7 @@ public class EmotesContract {
 	public static final String CONTENT_AUTHORITY = "com.trellmor.berrymotes";
 
 	/**
-	 * Base URI. (content://com.example.android.network.sync.basicsyncadapter)
+	 * Base uri (content://com.trellmor.berrymotes)
 	 */
 	public static final Uri BASE_CONTENT_URI = Uri.parse("content://"
 			+ CONTENT_AUTHORITY);
