@@ -47,9 +47,36 @@ public class FileContract {
 	 * URI Path for application files
 	 */
 	public static final String PATH_FILE = "file";
+
+	/**
+	 * URI Path for emote files
+	 */
+	public static final String PATH_EMOTE = "emote";
 	
 	/**
 	 * Content uri for application files
 	 */
 	public static final Uri CONTENT_URI_FILE = BASE_CONTENT_URI.buildUpon().appendPath(PATH_FILE).build();
+	
+	/**
+	 * Content uri for emote files
+	 */
+	public static final Uri CONTENT_URI_EMOTE = BASE_CONTENT_URI.buildUpon().appendPath(PATH_EMOTE).build();
+	
+	/**
+	 * Generate the URI for an emote
+	 * 
+	 * @param name Emote name
+	 * @param apng Set to true for animated emotes. Animated emotes will be returned as gifs
+	 * @return Emote file URI
+	 */
+	public static Uri getUriForEmote(String name, boolean apng) {
+		String ext;
+		if (apng) {
+			ext = ".gif";
+		} else {
+			ext = ".png";
+		}
+		return CONTENT_URI_EMOTE.buildUpon().appendPath(name + ext).build();
+	}
 }
