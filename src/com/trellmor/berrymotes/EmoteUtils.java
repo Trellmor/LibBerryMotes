@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 
@@ -14,11 +15,15 @@ import android.net.Uri;
  *
  */
 public class EmoteUtils {
-	public static String BERRYMOTES_NAME = "com.trellmor.berrymotes";
+	public static final String BERRYMOTES_NAME = "com.trellmor.berrymotes";
+	
+	public static final int BERRYMOTES_VERSION_1_0_0 = 10000;
+	public static final int BERRYMOTES_VERSION_1_1_0 = 10100;
+	public static final int BERRYMOTES_VERSION_1_2_0 = 10200;
 	
 	private EmoteUtils() {
 	}
-	
+
 	/**
 	 * Check if BerryMotes app is installed 
 	 * 
@@ -30,6 +35,23 @@ public class EmoteUtils {
 		try {
 			pm.getPackageInfo(BERRYMOTES_NAME, PackageManager.GET_ACTIVITIES);
 			return true;
+		} catch (PackageManager.NameNotFoundException e) {
+			return false;
+		}
+	}
+	
+	/**
+	 * Check if BerryMotes app is installed 
+	 * 
+	 * @param context Android context
+	 * @param version BerryMotes version
+	 * @return true if BerryMotes is installed
+	 */
+	public static boolean isBerryMotesInstalled(Context context, int version) {
+		PackageManager pm = context.getPackageManager();
+		try {
+			PackageInfo pi = pm.getPackageInfo(BERRYMOTES_NAME, PackageManager.GET_ACTIVITIES);
+			return pi.versionCode >= version;
 		} catch (PackageManager.NameNotFoundException e) {
 			return false;
 		}
