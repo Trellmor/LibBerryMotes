@@ -20,6 +20,7 @@ public class EmoteUtils {
 	public static final int BERRYMOTES_VERSION_1_0_0 = 10000;
 	public static final int BERRYMOTES_VERSION_1_1_0 = 10100;
 	public static final int BERRYMOTES_VERSION_1_2_0 = 10200;
+	public static final int BERRYMOTES_VERSION_1_3_0 = 10300;
 	
 	private EmoteUtils() {
 	}

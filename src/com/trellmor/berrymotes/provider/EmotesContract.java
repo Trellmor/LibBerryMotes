@@ -132,5 +132,10 @@ public class EmotesContract {
 		 * Emote checksum
 		 */
 		public static final String COLUMN_HASH = "hash";
+		
+		/**
+		 * Emote subreddit
+		 */
+		public static final String COLUMN_SUBREDDIT = "subreddit";
 	}
 }
