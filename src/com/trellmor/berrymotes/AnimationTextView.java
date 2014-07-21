@@ -69,7 +69,7 @@ public class AnimationTextView extends TextView implements Drawable.Callback {
 		handleAnimationDrawable(false);
 		removeTextChangedListener(mTextWatcher);
 	}
-
+	
 	private void handleAnimationDrawable(boolean isPlay) {
 		CharSequence text = getText();
 		handleAnimationDrawable(isPlay, text);
@@ -102,9 +102,11 @@ public class AnimationTextView extends TextView implements Drawable.Callback {
 		if (dr instanceof AnimationDrawable) {
 			// TextView caches some state, onLayout forces it to rerender
 			onLayout(true, getLeft(), getTop(), getRight(), getBottom());
+			invalidate();
+			return;
 		}
 
-		invalidate();
+		super.invalidateDrawable(dr);
 	}
 
 	@Override
