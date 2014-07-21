@@ -20,6 +20,8 @@
 
 package com.trellmor.berrymotes;
 
+import java.util.regex.Pattern;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -35,6 +37,9 @@ import android.preference.PreferenceManager;
 public class EmotesFormatter {
 	private boolean mEmotesEnabled = false;
 	private SettingsChangedListener mSettingsChangedListener = new SettingsChangedListener();
+	
+	public static final String REGEX_EMOTES = "\\[\\]\\(\\/([\\w:!#\\/]+)([-\\w!]*)([^)]*)\\)";
+	public static final Pattern PATTERN_EMOTES = Pattern.compile(REGEX_EMOTES);
 
 	/**
 	 * Create a new EmotesFormatter instance
@@ -48,6 +53,23 @@ public class EmotesFormatter {
 		mEmotesEnabled = settings.getBoolean(
 				EmoteSettings.KEY_BERRYMOTES_ENABLED, false);
 		settings.registerOnSharedPreferenceChangeListener(mSettingsChangedListener);
+	}
+
+	/**
+	 * Check if string contains emotes
+	 * 
+	 * @param s
+	 *            Input
+	 * @return True if string contains emote codes and
+	 *         {@link com.trellmor.berrymotes.EmoteSettings#KEY_BERRYMOTES_SETTINGS}
+	 *         is enabled
+	 */
+	public boolean containsEmotes(String s) {
+		if (mEmotesEnabled) {
+			return PATTERN_EMOTES.matcher(s).find();
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -75,8 +97,7 @@ public class EmotesFormatter {
 	 * @return Input converted to html
 	 */
 	public static String replaceEmotes(String s) {
-		return s.replaceAll("\\[\\]\\(\\/([\\w:!#\\/]+)([-\\w!]*)([^)]*)\\)",
-				"<img src=\"$1\" alt=\"$1\" />");
+		return PATTERN_EMOTES.matcher(s).replaceAll("<img src=\"$1\" alt=\"$1\" />");
 	}
 
 	private class SettingsChangedListener implements
