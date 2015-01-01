@@ -25,6 +25,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
+import com.trellmor.berrymotes.lib.R;
 
 /**
  * Emote settings helper

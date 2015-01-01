@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import com.trellmor.berrymotes.lib.R;
 
 /**
  * Emote helpers
