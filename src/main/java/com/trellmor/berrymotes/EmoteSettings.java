@@ -1,7 +1,7 @@
 /*
  * LibBerryMotes
  * 
- * Copyright (C) 2013 Daniel Triendl <trellmor@trellmor.com>
+ * Copyright (C) 2015 Daniel Triendl <trellmor@trellmor.com>
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,7 +23,7 @@ package com.trellmor.berrymotes;
 import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
+import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import com.trellmor.berrymotes.lib.R;
 
@@ -54,33 +54,47 @@ public class EmoteSettings {
 	 */
 	@SuppressWarnings("deprecation")
 	public static void addEmoteSettings(PreferenceActivity context) {
-		// Add 'BerryMotes' preferences, and a corresponding header.
-		PreferenceCategory fakeHeader = new PreferenceCategory(context);
-		fakeHeader.setTitle(R.string.pref_header_berrymotes);
-		context.getPreferenceScreen().addPreference(fakeHeader);
 		context.addPreferencesFromResource(R.xml.pref_emotes);
 
-		SharedPreferences settings = PreferenceManager
-				.getDefaultSharedPreferences(context);
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
 
 		Preference prefEnabled = context.findPreference(KEY_BERRYMOTES_ENABLED);
 		prefEnabled.setOnPreferenceChangeListener(sEnabledChangeListener);
 		boolean enabled = settings.getBoolean(KEY_BERRYMOTES_ENABLED, false);
 		boolean canEnable = sEnabledChangeListener.onPreferenceChange(prefEnabled,
 				settings.getBoolean(KEY_BERRYMOTES_ENABLED, false));
-		
+
 		if (enabled && !canEnable) {
 			settings.edit().putBoolean(KEY_BERRYMOTES_ENABLED, false).commit();
 		}
-		
+
 		Preference prefSettings = context.findPreference(KEY_BERRYMOTES_SETTINGS);
+		prefSettings.setOnPreferenceClickListener(sSettingsClickListener);
+	}
+
+	public static void addEmoteSettings(PreferenceFragment fragment) {
+		fragment.addPreferencesFromResource(R.xml.pref_emotes);
+
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(fragment.getActivity());
+
+		Preference prefEnabled = fragment.findPreference(KEY_BERRYMOTES_ENABLED);
+		prefEnabled.setOnPreferenceChangeListener(sEnabledChangeListener);
+		boolean enabled = settings.getBoolean(KEY_BERRYMOTES_ENABLED, false);
+		boolean canEnable = sEnabledChangeListener.onPreferenceChange(prefEnabled,
+				settings.getBoolean(KEY_BERRYMOTES_ENABLED, false));
+
+		if (enabled && !canEnable) {
+			settings.edit().putBoolean(KEY_BERRYMOTES_ENABLED, false).commit();
+		}
+
+		Preference prefSettings = fragment.findPreference(KEY_BERRYMOTES_SETTINGS);
 		prefSettings.setOnPreferenceClickListener(sSettingsClickListener);
 	}
 
 	/**
 	 * Helper to set preference summaries and show install BerryMotes dialog if necessary
 	 */
-	public static Preference.OnPreferenceChangeListener sEnabledChangeListener = new Preference.OnPreferenceChangeListener() {
+	public static final Preference.OnPreferenceChangeListener sEnabledChangeListener = new Preference.OnPreferenceChangeListener() {
 
 		@Override
 		public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -113,7 +127,7 @@ public class EmoteSettings {
 	/**
 	 * Helper to launch BerryMotes settings or show install BerryMotes dialog if necessary
 	 */	
-	public static Preference.OnPreferenceClickListener sSettingsClickListener = new Preference.OnPreferenceClickListener() {
+	public static final Preference.OnPreferenceClickListener sSettingsClickListener = new Preference.OnPreferenceClickListener() {
 		
 		@Override
 		public boolean onPreferenceClick(Preference preference) {

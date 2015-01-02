@@ -50,14 +50,14 @@ import com.trellmor.berrymotes.provider.EmotesContract;
 public class EmoteGetter implements ImageGetter {
 	private static final String TAG = EmoteGetter.class.getName();
 	
-	private ContentResolver mResolver;
+	private final ContentResolver mResolver;
 
 	private final String[] PROJECTION = { EmotesContract.Emote.COLUMN_IMAGE,
 			EmotesContract.Emote.COLUMN_APNG, EmotesContract.Emote.COLUMN_DELAY };
-	private LruCache<String, Drawable> mCache;
-	private LruCache<String, AnimationEmode> mAnimationCache;
-	private EmoteLoader mLoader;
-	private HashSet<String> mBlacklist;
+	private final LruCache<String, Drawable> mCache;
+	private final LruCache<String, AnimationEmode> mAnimationCache;
+	private final EmoteLoader mLoader;
+	private final HashSet<String> mBlacklist;
 
 	/**
 	 * Create new {@link EmoteGetter} instance
@@ -77,9 +77,9 @@ public class EmoteGetter implements ImageGetter {
 	 */
 	public EmoteGetter(Context context, EmoteLoader loader) {
 		mResolver = context.getContentResolver();
-		mCache = new LruCache<String, Drawable>(20);
-		mAnimationCache = new LruCache<String, AnimationEmode>(5);
-		mBlacklist = new HashSet<String>();
+		mCache = new LruCache<>(20);
+		mAnimationCache = new LruCache<>(5);
+		mBlacklist = new HashSet<>();
 		mLoader = loader;
 	}
 
@@ -164,7 +164,7 @@ public class EmoteGetter implements ImageGetter {
 	}
 
 	private class AnimationEmode {
-		private ArrayList<AnimationEmoteFrame> mFrames = new ArrayList<AnimationEmoteFrame>();
+		private final ArrayList<AnimationEmoteFrame> mFrames = new ArrayList<>();
 
 		public void addFrame(Drawable drawable, int duration) {
 			mFrames.add(new AnimationEmoteFrame(drawable, duration));

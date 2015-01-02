@@ -36,7 +36,6 @@ import android.preference.PreferenceManager;
  */
 public class EmotesFormatter {
 	private boolean mEmotesEnabled = false;
-	private SettingsChangedListener mSettingsChangedListener = new SettingsChangedListener();
 	
 	public static final String REGEX_EMOTES = "\\[\\]\\(\\/([\\w:!#\\/]+)([-\\w!]*)([^)]*)\\)";
 	public static final Pattern PATTERN_EMOTES = Pattern.compile(REGEX_EMOTES);
@@ -52,7 +51,7 @@ public class EmotesFormatter {
 				.getDefaultSharedPreferences(context);
 		mEmotesEnabled = settings.getBoolean(
 				EmoteSettings.KEY_BERRYMOTES_ENABLED, false);
-		settings.registerOnSharedPreferenceChangeListener(mSettingsChangedListener);
+		settings.registerOnSharedPreferenceChangeListener(new SettingsChangedListener());
 	}
 
 	/**
@@ -65,11 +64,7 @@ public class EmotesFormatter {
 	 *         is enabled
 	 */
 	public boolean containsEmotes(String s) {
-		if (mEmotesEnabled) {
-			return PATTERN_EMOTES.matcher(s).find();
-		} else {
-			return false;
-		}
+		return mEmotesEnabled && PATTERN_EMOTES.matcher(s).find();
 	}
 
 	/**
@@ -100,12 +95,11 @@ public class EmotesFormatter {
 		return PATTERN_EMOTES.matcher(s).replaceAll("<img src=\"$1\" alt=\"$1\" />");
 	}
 
-	private class SettingsChangedListener implements
-			SharedPreferences.OnSharedPreferenceChangeListener {
+	private class SettingsChangedListener
+			implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 		@Override
-		public void onSharedPreferenceChanged(
-				SharedPreferences sharedPreferences, String key) {
+		public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 			if (EmoteSettings.KEY_BERRYMOTES_ENABLED.equals(key)) {
 				mEmotesEnabled = sharedPreferences.getBoolean(key, false);
 			}

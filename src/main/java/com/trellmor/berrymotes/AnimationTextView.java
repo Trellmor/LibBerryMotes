@@ -39,8 +39,8 @@ import android.widget.TextView;
  *
  */
 public class AnimationTextView extends TextView implements Drawable.Callback {
-	private Handler mHandler = new Handler();
-	private AnimationTextWatcher mTextWatcher = new AnimationTextWatcher();
+	private final Handler mHandler = new Handler();
+	private final AnimationTextWatcher mTextWatcher = new AnimationTextWatcher();
 
 	public AnimationTextView(Context context) {
 		super(context);
@@ -123,7 +123,7 @@ public class AnimationTextView extends TextView implements Drawable.Callback {
 		}
 	}
 
-	class AnimationTextWatcher implements TextWatcher {
+	private class AnimationTextWatcher implements TextWatcher {
 		@Override
 		public void afterTextChanged(Editable s) {
 			handleAnimationDrawable(true, s);

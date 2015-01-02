@@ -8,7 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
 
 public class ScalingEmoteLoader implements EmoteLoader {
-	private Context mContext;
+	private final Context mContext;
 
 	/**
 	 * Create new ScalingEmoteLoader instance

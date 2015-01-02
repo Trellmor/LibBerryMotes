@@ -64,7 +64,7 @@ public class EmoteUtils {
 	 * 
 	 * @param context Android context
 	 */
-	public static void launchMarkert(Context context) {
+	public static void launchMarket(Context context) {
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setData(Uri.parse("market://details?id=" + BERRYMOTES_NAME));
 		context.startActivity(intent);
@@ -95,7 +95,7 @@ public class EmoteUtils {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				EmoteUtils.launchMarkert(theContext);
+				EmoteUtils.launchMarket(theContext);
 			}
 		});
 		builder.setNegativeButton(android.R.string.cancel, null);
