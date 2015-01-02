@@ -28,9 +28,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v4.util.LruCache;
 import android.text.Html.ImageGetter;
 import android.util.Log;
+import android.util.LruCache;
 
 import com.trellmor.berrymotes.loader.BasicEmoteLoader;
 import com.trellmor.berrymotes.loader.EmoteLoader;
