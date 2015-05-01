@@ -69,9 +69,8 @@ public class EmotesFormatter {
 
 	/**
 	 * Format Emote string
-	 * 
-	 * @param s
-	 *            Input
+	 *
+	 * @param s Input
 	 * @return Input converted to html, if
 	 *         {@link com.trellmor.berrymotes.EmoteSettings#KEY_BERRYMOTES_SETTINGS}
 	 *         is enabled
@@ -85,14 +84,40 @@ public class EmotesFormatter {
 	}
 
 	/**
+	 * Format Emote string
+	 *
+	 * @param s Input
+	 * @param tag HTML tag
+	 * @return Input converted to html, if
+	 *         {@link com.trellmor.berrymotes.EmoteSettings#KEY_BERRYMOTES_SETTINGS}
+	 *         is enabled
+	 */
+	public String formatString(String s, String tag) {
+		if (mEmotesEnabled) {
+			return replaceEmotes(s, tag);
+		} else {
+			return s;
+		}
+	}
+
+	/**
 	 * Apply regex to input
-	 * 
-	 * @param s
-	 *            input
+	 *
+	 * @param s input
 	 * @return Input converted to html
 	 */
 	public static String replaceEmotes(String s) {
-		return PATTERN_EMOTES.matcher(s).replaceAll("<img src=\"$1\" alt=\"$1\" />");
+		return replaceEmotes(s, "img");
+	}
+
+	/**
+	 * Apply regex to input
+	 *
+	 * @param s input
+	 * @return Input converted to html
+	 */
+	public static String replaceEmotes(String s, String tag) {
+		return PATTERN_EMOTES.matcher(s).replaceAll("<" + tag + " src=\"$1\" alt=\"$1\" />");
 	}
 
 	private class SettingsChangedListener
