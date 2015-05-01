@@ -54,8 +54,8 @@ public class EmoteGetter implements ImageGetter {
 
 	private final String[] PROJECTION = { EmotesContract.Emote.COLUMN_IMAGE,
 			EmotesContract.Emote.COLUMN_APNG, EmotesContract.Emote.COLUMN_DELAY };
-	private final LruCache<String, Drawable> mCache;
-	private final LruCache<String, AnimationEmode> mAnimationCache;
+	private static final LruCache<String, Drawable> mCache = new LruCache<>(50);
+	private static final LruCache<String, AnimationEmote> mAnimationCache = new LruCache<>(10);
 	private final EmoteLoader mLoader;
 	private final HashSet<String> mBlacklist;
 
@@ -77,8 +77,6 @@ public class EmoteGetter implements ImageGetter {
 	 */
 	public EmoteGetter(Context context, EmoteLoader loader) {
 		mResolver = context.getContentResolver();
-		mCache = new LruCache<>(20);
-		mAnimationCache = new LruCache<>(5);
 		mBlacklist = new HashSet<>();
 		mLoader = loader;
 	}
