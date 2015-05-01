@@ -92,7 +92,7 @@ public class EmoteGetter implements ImageGetter {
 		if (d != null)
 			return d;
 
-		AnimationEmode ae = mAnimationCache.get(source);
+		AnimationEmote ae = mAnimationCache.get(source);
 		if (ae != null) {
 			try {
 				d = ae.newDrawable();
@@ -119,7 +119,7 @@ public class EmoteGetter implements ImageGetter {
 							.getColumnIndex(EmotesContract.Emote.COLUMN_APNG)) == 1) {
 
 				// Create AnimationDrawable
-				ae = new AnimationEmode();
+				ae = new AnimationEmote();
 
 				final int POS_DELAY = cursor
 						.getColumnIndex(EmotesContract.Emote.COLUMN_DELAY);
@@ -163,7 +163,7 @@ public class EmoteGetter implements ImageGetter {
 		return d;
 	}
 
-	private class AnimationEmode {
+	private class AnimationEmote {
 		private final ArrayList<AnimationEmoteFrame> mFrames = new ArrayList<>();
 
 		public void addFrame(Drawable drawable, int duration) {
