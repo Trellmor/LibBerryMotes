@@ -20,9 +20,6 @@
 
 package com.trellmor.berrymotes;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -36,34 +33,35 @@ import com.trellmor.berrymotes.loader.BasicEmoteLoader;
 import com.trellmor.berrymotes.loader.EmoteLoader;
 import com.trellmor.berrymotes.provider.EmotesContract;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 /**
  * EmoteGetter
- * 
+ * <p/>
  * Fetches emotes from sd-card and returns Drawables
- * 
+ * <p/>
  * Decends from ImageGetter and can be used with
  * {@link android.text.Html#fromHtml(String, ImageGetter, android.text.Html.TagHandler)}
- * 
+ *
  * @author Daniel
- * 
  */
 public class EmoteGetter implements ImageGetter {
 	private static final String TAG = EmoteGetter.class.getName();
-	
+
 	private final ContentResolver mResolver;
 
-	private final String[] PROJECTION = { EmotesContract.Emote.COLUMN_IMAGE,
-			EmotesContract.Emote.COLUMN_APNG, EmotesContract.Emote.COLUMN_DELAY };
+	private final String[] PROJECTION = {EmotesContract.Emote.COLUMN_IMAGE,
+			EmotesContract.Emote.COLUMN_APNG, EmotesContract.Emote.COLUMN_DELAY};
 	private static final LruCache<String, Drawable> mCache = new LruCache<>(50);
 	private static final LruCache<String, AnimationEmote> mAnimationCache = new LruCache<>(10);
 	private final EmoteLoader mLoader;
-	private final HashSet<String> mBlacklist;
+	private static final HashSet<String> mBlacklist = new HashSet<>();
 
 	/**
 	 * Create new {@link EmoteGetter} instance
-	 * 
-	 * @param context
-	 *            Android context
+	 *
+	 * @param context Android context
 	 */
 	public EmoteGetter(Context context) {
 		this(context, new BasicEmoteLoader());
@@ -71,20 +69,21 @@ public class EmoteGetter implements ImageGetter {
 
 	/**
 	 * Create new EmoteGetter instance
-	 * 
-	 * @param context
-	 *            Android context
+	 *
+	 * @param context Android context
+	 * @param loader  Emote loader instance
 	 */
 	public EmoteGetter(Context context, EmoteLoader loader) {
 		mResolver = context.getContentResolver();
-		mBlacklist = new HashSet<>();
 		mLoader = loader;
 	}
 
 	@Override
 	public Drawable getDrawable(String source) {
-		if (mBlacklist.contains(source))
-			return null;
+		synchronized (mBlacklist) {
+			if (mBlacklist.contains(source))
+				return null;
+		}
 
 		Drawable d = mCache.get(source);
 		if (d != null)
@@ -103,8 +102,7 @@ public class EmoteGetter implements ImageGetter {
 
 		Cursor cursor = mResolver.query(EmotesContract.Emote.CONTENT_URI,
 				PROJECTION, EmotesContract.Emote.COLUMN_NAME + "=?",
-				new String[] { source }, EmotesContract.Emote.COLUMN_INDEX
-						+ " ASC");
+				new String[]{source}, EmotesContract.Emote.COLUMN_INDEX + " ASC");
 
 		if (cursor != null && cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -114,13 +112,12 @@ public class EmoteGetter implements ImageGetter {
 
 			if (cursor.getCount() > 1
 					&& cursor.getInt(cursor
-							.getColumnIndex(EmotesContract.Emote.COLUMN_APNG)) == 1) {
+					.getColumnIndex(EmotesContract.Emote.COLUMN_APNG)) == 1) {
 
 				// Create AnimationDrawable
 				ae = new AnimationEmote();
 
-				final int POS_DELAY = cursor
-						.getColumnIndex(EmotesContract.Emote.COLUMN_DELAY);
+				final int POS_DELAY = cursor.getColumnIndex(EmotesContract.Emote.COLUMN_DELAY);
 
 				try {
 					do {
@@ -134,7 +131,6 @@ public class EmoteGetter implements ImageGetter {
 					mAnimationCache.put(source, ae);
 				} catch (OutOfMemoryError e) {
 					d = null;
-					mBlacklist.add(source);
 					Log.e(TAG, "Failed to load " + source, e);
 				}
 			} else {
@@ -143,12 +139,17 @@ public class EmoteGetter implements ImageGetter {
 					d = mLoader.fromPath(path);
 				} catch (OutOfMemoryError e) {
 					d = null;
-					mBlacklist.add(source);
 					Log.e(TAG, "Failed to load " + source, e);
 				}
 				if (d != null) {
 					mCache.put(source, d);
 				}
+			}
+		}
+
+		if (d == null) {
+			synchronized (mBlacklist) {
+				if (!mBlacklist.contains(source)) mBlacklist.add(source);
 			}
 		}
 
