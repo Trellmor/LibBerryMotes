@@ -47,8 +47,6 @@ public class EmotesContract {
 
 	/**
 	 * URI Path for all emotes
-	 * 
-	 * Applies filter for NSFW emotes
 	 */
 	public static final String PATH_EMOTES = "emotes";
 	
@@ -102,11 +100,6 @@ public class EmotesContract {
 		 * Emote name
 		 */
 		public static final String COLUMN_NAME = "name";
-
-		/**
-		 * Emote NSFW
-		 */
-		public static final String COLUMN_NSFW = "nsfw";
 
 		/**
 		 * Animated emote

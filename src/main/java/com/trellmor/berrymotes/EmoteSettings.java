@@ -103,8 +103,7 @@ public class EmoteSettings {
 				boolean boolValue = Boolean.parseBoolean(newValue.toString());
 
 				if (boolValue) {
-					canChange = EmoteUtils.isBerryMotesInstalled(preference
-							.getContext());
+					canChange = EmoteUtils.isBerryMotesInstalled(preference.getContext());
 					
 					if (!canChange) {
 						EmoteUtils.showInstallDialog(preference.getContext());
@@ -112,11 +111,9 @@ public class EmoteSettings {
 				}
 
 				if (boolValue && canChange) {
-					preference
-							.setSummary(R.string.pref_description_berrymotes_enable_true);
+					preference.setSummary(R.string.pref_description_berrymotes_enable_true);
 				} else {
-					preference
-							.setSummary(R.string.pref_description_berrymotes_enable_false);
+					preference.setSummary(R.string.pref_description_berrymotes_enable_false);
 				}
 			}
 			return canChange;
