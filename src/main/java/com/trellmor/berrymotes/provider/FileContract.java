@@ -44,19 +44,9 @@ public class FileContract {
 			+ CONTENT_AUTHORITY);
 
 	/**
-	 * URI Path for application files
-	 */
-	public static final String PATH_FILE = "file";
-
-	/**
 	 * URI Path for emote files
 	 */
 	public static final String PATH_EMOTE = "emote";
-	
-	/**
-	 * Content uri for application files
-	 */
-	public static final Uri CONTENT_URI_FILE = BASE_CONTENT_URI.buildUpon().appendPath(PATH_FILE).build();
 	
 	/**
 	 * Content uri for emote files
