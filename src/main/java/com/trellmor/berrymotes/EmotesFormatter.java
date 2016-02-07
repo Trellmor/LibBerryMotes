@@ -34,7 +34,7 @@ import android.preference.PreferenceManager;
  * @author Daniel
  * 
  */
-public class EmotesFormatter {
+public class EmotesFormatter implements SharedPreferences.OnSharedPreferenceChangeListener {
 	private boolean mEmotesEnabled = false;
 	
 	public static final String REGEX_EMOTES = "\\[\\]\\(\\/([\\w:!#\\/]+)([-\\w!]*)([^)]*)\\)";
@@ -51,7 +51,7 @@ public class EmotesFormatter {
 				.getDefaultSharedPreferences(context);
 		mEmotesEnabled = settings.getBoolean(
 				EmoteSettings.KEY_BERRYMOTES_ENABLED, false);
-		settings.registerOnSharedPreferenceChangeListener(new SettingsChangedListener());
+		settings.registerOnSharedPreferenceChangeListener(this);
 	}
 
 	/**
@@ -120,15 +120,11 @@ public class EmotesFormatter {
 		return PATTERN_EMOTES.matcher(s).replaceAll("<" + tag + " src=\"$1\" alt=\"$1\" />");
 	}
 
-	private class SettingsChangedListener
-			implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-		@Override
-		public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-			if (EmoteSettings.KEY_BERRYMOTES_ENABLED.equals(key)) {
-				mEmotesEnabled = sharedPreferences.getBoolean(key, false);
-			}
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+		if (EmoteSettings.KEY_BERRYMOTES_ENABLED.equals(key)) {
+			mEmotesEnabled = sharedPreferences.getBoolean(key, false);
 		}
-
 	}
 }
