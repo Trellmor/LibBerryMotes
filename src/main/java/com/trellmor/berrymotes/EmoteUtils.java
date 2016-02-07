@@ -17,12 +17,16 @@ import com.trellmor.berrymotes.lib.R;
  */
 public class EmoteUtils {
 	public static final String BERRYMOTES_NAME = "com.trellmor.berrymotes";
+
+	public static final String ACTION_GET_CODE = "com.trellmor.berrymotes.intent.action.GET_CODE";
+	public static final String EXTRA_CODE = "com.trellmor.berrymotes.intent.extra.CODE";
 	
 	public static final int BERRYMOTES_VERSION_1_0_0 = 10000;
 	public static final int BERRYMOTES_VERSION_1_1_0 = 10100;
 	public static final int BERRYMOTES_VERSION_1_2_0 = 10200;
 	public static final int BERRYMOTES_VERSION_1_3_0 = 10300;
-	
+	public static final int BERRYMOTES_VERSION_2_0_0 = 20000;
+
 	private EmoteUtils() {
 	}
 
