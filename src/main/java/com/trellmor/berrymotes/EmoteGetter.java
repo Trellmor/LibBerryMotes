@@ -165,11 +165,11 @@ public class EmoteGetter implements ImageGetter {
 	private class AnimationEmote {
 		private final ArrayList<AnimationEmoteFrame> mFrames = new ArrayList<>();
 
-		public void addFrame(Drawable drawable, int duration) {
+		void addFrame(Drawable drawable, int duration) {
 			mFrames.add(new AnimationEmoteFrame(drawable, duration));
 		}
 
-		public Drawable newDrawable() {
+		Drawable newDrawable() {
 			AnimationDrawable d = new AnimationDrawable();
 			for (AnimationEmoteFrame frame : mFrames) {
 				d.addFrame(frame.getDrawable(), frame.getDuration());
@@ -182,7 +182,7 @@ public class EmoteGetter implements ImageGetter {
 			private final Drawable mDrawable;
 			private final int mDuration;
 
-			public AnimationEmoteFrame(Drawable drawable, int duration) {
+			AnimationEmoteFrame(Drawable drawable, int duration) {
 				mDrawable = drawable;
 				mDuration = duration;
 			}
@@ -191,7 +191,7 @@ public class EmoteGetter implements ImageGetter {
 				return mDrawable;
 			}
 
-			public int getDuration() {
+			int getDuration() {
 				return mDuration;
 			}
 		}

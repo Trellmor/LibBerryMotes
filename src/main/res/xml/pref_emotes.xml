@@ -28,9 +28,9 @@
         android:key="berrymotes.enabled"
         android:summary="@string/pref_description_berrymotes_enable_false"
         android:title="@string/pref_title_berrymotes_enable" />
-    
+
 	<Preference
 	    android:title="@string/pref_title_berrymotes_settings" 
 	    android:key="berrymotes.settings" />
-    
+
 </PreferenceScreen>

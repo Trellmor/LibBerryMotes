@@ -25,6 +25,7 @@ import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.Spanned;
 import android.text.TextWatcher;
@@ -98,7 +99,7 @@ public class AnimationTextView extends TextView implements Drawable.Callback {
 
 	@SuppressLint("WrongCall")
 	@Override
-	public void invalidateDrawable(Drawable dr) {
+	public void invalidateDrawable(@NonNull Drawable dr) {
 		if (dr instanceof AnimationDrawable) {
 			// TextView caches some state, onLayout forces it to rerender
 			onLayout(true, getLeft(), getTop(), getRight(), getBottom());
@@ -110,17 +111,13 @@ public class AnimationTextView extends TextView implements Drawable.Callback {
 	}
 
 	@Override
-	public void scheduleDrawable(Drawable who, Runnable what, long when) {
-		if (who != null && what != null) {
-			mHandler.postAtTime(what, when);
-		}
+	public void scheduleDrawable(@NonNull Drawable who, @NonNull Runnable what, long when) {
+		mHandler.postAtTime(what, when);
 	}
 
 	@Override
-	public void unscheduleDrawable(Drawable who, Runnable what) {
-		if (who != null && what != null) {
-			mHandler.removeCallbacks(what);
-		}
+	public void unscheduleDrawable(@NonNull Drawable who, @NonNull Runnable what) {
+		mHandler.removeCallbacks(what);
 	}
 
 	private class AnimationTextWatcher implements TextWatcher {

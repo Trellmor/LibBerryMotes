@@ -65,7 +65,7 @@ public class EmoteSettings {
 				settings.getBoolean(KEY_BERRYMOTES_ENABLED, false));
 
 		if (enabled && !canEnable) {
-			settings.edit().putBoolean(KEY_BERRYMOTES_ENABLED, false).commit();
+			settings.edit().putBoolean(KEY_BERRYMOTES_ENABLED, false).apply();
 		}
 
 		Preference prefSettings = context.findPreference(KEY_BERRYMOTES_SETTINGS);
@@ -84,7 +84,7 @@ public class EmoteSettings {
 				settings.getBoolean(KEY_BERRYMOTES_ENABLED, false));
 
 		if (enabled && !canEnable) {
-			settings.edit().putBoolean(KEY_BERRYMOTES_ENABLED, false).commit();
+			settings.edit().putBoolean(KEY_BERRYMOTES_ENABLED, false).apply();
 		}
 
 		Preference prefSettings = fragment.findPreference(KEY_BERRYMOTES_SETTINGS);
@@ -104,7 +104,7 @@ public class EmoteSettings {
 
 				if (boolValue) {
 					canChange = EmoteUtils.isBerryMotesInstalled(preference.getContext());
-					
+
 					if (!canChange) {
 						EmoteUtils.showInstallDialog(preference.getContext());
 					}

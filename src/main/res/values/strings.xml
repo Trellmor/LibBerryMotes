@@ -25,7 +25,7 @@
 
     <string name="berrymotes_app_name">BerryMotes</string>
     <string name="berrymotes_not_installed">BerryMotes is not installed. Install it now from the Play store.</string>
-    
+
     <string name="pref_header_berrymotes">BerryMotes</string>
     <string name="pref_title_berrymotes_enable">Enable emotes</string>
     <string name="pref_description_berrymotes_enable_false">Emotes are disabled, no emotes will be displayed</string>
