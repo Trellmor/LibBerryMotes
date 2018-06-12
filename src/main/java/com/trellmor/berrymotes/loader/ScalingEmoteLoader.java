@@ -1,25 +1,24 @@
 package com.trellmor.berrymotes.loader;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
 
-public class ScalingEmoteLoader implements EmoteLoader {
-	private final Context mContext;
-
+public class ScalingEmoteLoader extends ContextWrapper implements EmoteLoader {
 	/**
 	 * Create new ScalingEmoteLoader instance
 	 * 
 	 * Automatically upscales the bitmap to the device DPI
 	 * 
-	 * @param context
+	 * @param ctx
 	 *            Android context
 	 */
-	public ScalingEmoteLoader(Context context) {
-		mContext = context;
+	public ScalingEmoteLoader(Context ctx) {
+		super(ctx);
 	}
 
 	@Override
@@ -31,7 +30,7 @@ public class ScalingEmoteLoader implements EmoteLoader {
 		
 		Bitmap bitmap = BitmapFactory.decodeFile(path, options);		
 		if (bitmap != null) {
-			drawable = new BitmapDrawable(mContext.getResources(), bitmap);
+			drawable = new BitmapDrawable(getResources(), bitmap);
 		}
 		
 		return drawable;
